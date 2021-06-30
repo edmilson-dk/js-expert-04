@@ -1,5 +1,6 @@
 import http from "http";
 import { Server } from "socket.io";
+import { constants } from "./constants.js";
 
 export default class SocketServer {
   #io;
@@ -18,7 +19,9 @@ export default class SocketServer {
           for (const [functtionName, functionValue] of events) {
             socket.on(functtionName, (...args) => functionValue(socket, ...args));
           }
-        })
+
+          eventEmitter.emit(constants.events.USER_CONNECTED,socket);
+        });
       }
     }
   }
