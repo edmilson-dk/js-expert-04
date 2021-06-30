@@ -13,7 +13,6 @@ export default class RoomsController {
       .filter(fn => fn !== 'constructor')
       .map(name => [name, this[name].bind(this)])
 
-    console.log("FUNCTIONS: ",functions);
     return new Map(functions);
   }
 }
