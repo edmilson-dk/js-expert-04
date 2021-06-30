@@ -14,13 +14,13 @@ export default class SocketServer {
     for (const routes of routeConfig) {
       for (const [namespace, { events, eventEmitter }] of Object.entries(routes)) {
         const route = this.namespaces[namespace] = this.#io.of(`/${namespace}`);
-
+  
         route.on("connection", socket => {
-          for (const [functtionName, functionValue] of events) {
-            socket.on(functtionName, (...args) => functionValue(socket, ...args));
+          for (const [functionName, functionValue] of events) {
+            socket.on(functionName, (...args) => functionValue(socket, ...args));
           }
 
-          eventEmitter.emit(constants.events.USER_CONNECTED,socket);
+          eventEmitter.emit(constants.events.USER_CONNECTED, socket);
         });
       }
     }
