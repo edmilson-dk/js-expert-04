@@ -31,4 +31,6 @@ const routeConfig = Object.entries(namespaces)
     }
   })
 
+socketServer.attachEvents({ routeConfig })
+
 console.log("Socket server is running at", server.address().port);
