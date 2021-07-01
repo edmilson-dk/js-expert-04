@@ -1,4 +1,5 @@
 import Attendee from "../entities/attendee.js";
+import Room from "../entities/room.js";
 import { constants } from "../util/constants.js";
 
 export default class RoomsController {
@@ -49,13 +50,13 @@ export default class RoomsController {
 
     socket.join(roomId);
 
-    return this.room.get(roomId);
+    return this.rooms.get(roomId);
   }
 
   #mapRoom(room) {
     const users = [...room.users.values()];
     const speakersCount = users.filter(user => user.isSpeaker).length;
-    const featuredAttendees = user.slice(0, 3);
+    const featuredAttendees = users.slice(0, 3);
     const mappedRoom = new Room({
       ...room,
       featuredAttendees,
@@ -82,7 +83,8 @@ export default class RoomsController {
       roomId
     );
 
-    console.log({ updatedUserData });
+    const updatedRoom = this.#joinUserRoom(socket, updatedUserData, room);
+    console.log(updatedRoom);
     socket.emit(constants.events.USER_CONNECTED, updatedUserData);
   }
 
