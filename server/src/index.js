@@ -1,5 +1,4 @@
 import Events from "events";
-
 import RoomsController from "./controllers/roomsController.js";
 import { constants } from "./util/constants.js";
 import SocketServer from "./util/socket.js";
@@ -12,8 +11,8 @@ const server = await socketServer.start();
 const roomsController = new RoomsController();
 
 const namespaces = {
-  room: { 
-    controller: roomsController, 
+  room: {
+    controller: roomsController,
     eventEmitter: new Events(),
   }
 }

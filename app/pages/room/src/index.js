@@ -12,13 +12,13 @@ const socket = socketBuilder
   .build();
 
 const room = {
-  id: Date.now(),
+  id: "001",
   topic: "Js expert",
 }
 
 const user = {
   img: "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/sloth_lazybones_sluggard_avatar-512.png",
-  username: "Edmilson",
+  username: "Edmilson " + Date.now(),
 }
 
 socket.emit(constants.events.JOIN_ROOM, { user, room });
