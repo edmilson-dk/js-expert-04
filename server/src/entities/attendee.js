@@ -1,4 +1,4 @@
-export default class Attende {
+export default class Attendee {
   constructor({ id, username, img, isSpeaker, roomId, peerId }) {
     this.id = id;
     this.username = username;
