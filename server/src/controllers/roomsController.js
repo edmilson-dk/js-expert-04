@@ -24,6 +24,48 @@ export default class RoomsController {
     return this.#users.get(userId);
   }
 
+  #joinUserRoom(socket, user, room) {
+    const roomId = room.id;
+    const existingRoom = this.rooms.has(roomId);
+    const currentRoom = existingRoom ? this.rooms.get(roomId) : {};
+    const currentUser = new Attendee({
+      ...user,
+      roomId,
+    });
+
+    // definir quem é o dono da sala
+    const [owner, users] = existingRoom
+      ? [currentRoom.owner, currentRoom.users]
+      : [currentUser, new Set()];
+
+    const updatedRoom = this.#mapRoom({
+      ...currentRoom,
+      ...room,
+      owner,
+      users: new Set([...users, ...[currentUser]]),
+    });
+
+    this.rooms.set(roomId, updatedRoom);
+
+    socket.join(roomId);
+
+    return this.room.get(roomId);
+  }
+
+  #mapRoom(room) {
+    const users = [...room.users.values()];
+    const speakersCount = users.filter(user => user.isSpeaker).length;
+    const featuredAttendees = user.slice(0, 3);
+    const mappedRoom = new Room({
+      ...room,
+      featuredAttendees,
+      speakersCount,
+      attendeesCount: room.users.size,
+    });
+
+    return mappedRoom;
+  }
+
   onNewConnection(socket) {
     const { id } = socket;
     console.log("connection stablished with #", id);
