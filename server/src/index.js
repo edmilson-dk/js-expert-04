@@ -3,7 +3,7 @@ import RoomsController from "./controllers/roomsController.js";
 import { constants } from "./util/constants.js";
 import SocketServer from "./util/socket.js";
 
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 
 const socketServer = new SocketServer({ port: PORT });
 const server = await socketServer.start();
