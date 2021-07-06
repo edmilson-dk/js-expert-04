@@ -34,16 +34,15 @@ export default class RoomsController {
       roomId,
     });
 
-    // definir quem é o dono da sala
-    const [owner, users] = existingRoom
-      ? [currentRoom.owner, currentRoom.users]
-      : [currentUser, new Set()];
+    const [ owner, users ] = existingRoom
+      ? [ currentRoom.owner, currentRoom.users ]
+      : [ currentUser, new Set() ];
 
     const updatedRoom = this.#mapRoom({
       ...currentRoom,
       ...room,
       owner,
-      users: new Set([...users, ...[currentUser]]),
+      users: new Set([ ...users, ...[ currentUser ] ]),
     });
 
     this.rooms.set(roomId, updatedRoom);
@@ -54,7 +53,7 @@ export default class RoomsController {
   }
 
   #mapRoom(room) {
-    const users = [...room.users.values()];
+    const users = [ ...room.users.values() ];
     const speakersCount = users.filter(user => user.isSpeaker).length;
     const featuredAttendees = users.slice(0, 3);
     const mappedRoom = new Room({
@@ -65,6 +64,16 @@ export default class RoomsController {
     });
 
     return mappedRoom;
+  }
+
+  #replyWithActiveUsers(socket, users) {
+    const event = constants.events.LOBBY_UPDATED;
+    socket.emit(event, [ ...users.values() ]);
+  }
+
+  #notifyUsersOnRoom(socket, roomId, user) {
+    const event = constants.events.USER_CONNECTED;
+    socket.to(roomId).emit(event, user);
   }
 
   onNewConnection(socket) {
@@ -84,14 +93,14 @@ export default class RoomsController {
     );
 
     const updatedRoom = this.#joinUserRoom(socket, updatedUserData, room);
-    console.log(updatedRoom);
-    socket.emit(constants.events.USER_CONNECTED, updatedUserData);
+    this.#notifyUsersOnRoom(socket, roomId, updatedUserData);
+    this.#replyWithActiveUsers(socket, updatedRoom.users);
   }
 
   getEvents() {
     const functions = Reflect.ownKeys(RoomsController.prototype)
       .filter(fn => fn !== 'constructor' && fn !== "getEvents")
-      .map(name => [name, this[name].bind(this)]);
+      .map(name => [ name, this[ name ].bind(this) ]);
 
     return new Map(functions);
   }
