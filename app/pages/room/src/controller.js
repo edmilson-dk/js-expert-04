@@ -4,8 +4,11 @@ export default class RoomController {
     this.roomInfo = roomInfo;
   }
 
-  async initialize() {
+  static async initialize(dependencies) {
+    return new RoomController(dependencies)._initialize();
+  }
 
+  async _initialize() {
     const socket = socketBuilder
       .setOnUserConnected((user) => console.log("User connected: ", user))
       .setOnUserDisconnected((user) => console.log("User disconnected: ", user))

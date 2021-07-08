@@ -19,7 +19,9 @@ const socketBuilder = new RoomSocketBuilder({
   namespace: constants.socketNamespaces.room,
 });
 
-const controller = new RoomController({
+const dependencies = {
   socketBuilder,
   roomInfo
-});
+}
+
+await RoomController.initialize(dependencies);
