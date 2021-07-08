@@ -2,6 +2,7 @@ export default class RoomController {
   constructor({ socketBuilder, roomInfo }) {
     this.socketBuilder = socketBuilder;
     this.roomInfo = roomInfo;
+    this.socket = {};
   }
 
   static async initialize(dependencies) {
@@ -9,12 +10,29 @@ export default class RoomController {
   }
 
   async _initialize() {
-    const socket = socketBuilder
-      .setOnUserConnected((user) => console.log("User connected: ", user))
-      .setOnUserDisconnected((user) => console.log("User disconnected: ", user))
-      .setOnRoomUpdated((room) => console.log("room list: ", room))
+    this.socket = this._setupSocket();
+    this.socket.emit(constants.events.JOIN_ROOM, this.roomInfo);
+  }
+
+  onUserConnected() {
+    return (user) => console.log("user connected: ", user);
+  }
+
+  onUserDisconnected() {
+    return (user) => console.log("user disconnected: ", user);
+  }
+
+  onRoomUpdated() {
+    return (room) => console.log("room list: ", room);
+  }
+
+  _setupSocket() {
+    const socket = this.socketBuilder
+      .setOnUserConnected(this.onUserConnected())
+      .setOnUserDisconnected(this.onUserDisconnected())
+      .setOnRoomUpdated(this.onRoomUpdated())
       .build();
 
-    socket.emit(constants.events.JOIN_ROOM, this.roomInfo);
+    return socket;
   }
 }
