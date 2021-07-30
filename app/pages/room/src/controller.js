@@ -1,9 +1,10 @@
 import { constants } from "../../_shared/constants.js";
 
 export default class RoomController {
-  constructor({ socketBuilder, roomInfo }) {
+  constructor ({ socketBuilder, roomInfo, view }) {
     this.socketBuilder = socketBuilder;
     this.roomInfo = roomInfo;
+    this.view = view;
     this.socket = {};
   }
 
@@ -12,8 +13,13 @@ export default class RoomController {
   }
 
   async _initialize() {
+    this._setupViewEvents();
     this.socket = this._setupSocket();
     this.socket.emit(constants.events.JOIN_ROOM, this.roomInfo);
+  }
+
+  _setupViewEvents() {
+    this.view.updateUserImage(this.roomInfo.user);
   }
 
   onUserConnected() {
