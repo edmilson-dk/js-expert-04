@@ -20,6 +20,7 @@ export default class RoomController {
 
   _setupViewEvents() {
     this.view.updateUserImage(this.roomInfo.user);
+    this.view.updateRoomTopic(this.roomInfo.room);
   }
 
   onUserConnected() {
