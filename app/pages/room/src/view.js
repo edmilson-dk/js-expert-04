@@ -16,9 +16,15 @@ export default class View {
     $roomTopic.innerText = topic;
   }
 
+
+  static updateAttendeesOnGrid(users) {
+    users.forEach(item => View.addAttendeeOnGrid(item));
+  }
+
   static addAttendeeOnGrid(item) {
     const attendee = new Attendee(item);
     const htmlTemplate = getTemplate(attendee);
+
     const baseElement = attendee.isSpeaker ? $gridSpeakers : $gridAttendees;
     baseElement.innerHTML += htmlTemplate;
   }

@@ -35,7 +35,10 @@ export default class RoomController {
   }
 
   onRoomUpdated() {
-    return (room) => console.log("room list: ", room);
+    return (room) => {
+      this.view.updateAttendeesOnGrid(room);
+      console.log("room list: ", room);
+    };
   }
 
   _setupSocket() {

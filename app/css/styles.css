@@ -1,7 +1,9 @@
 @import url(reset.css);
 @import url(colors.css);
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
-html, body {
+
+html,
+body {
   height: 100%;
 }
 
@@ -62,7 +64,8 @@ a {
   box-shadow: 0rem 0.05rem 0.1rem var(--ice-color);
 }
 
-.cards__card__title, .room-card__title {
+.cards__card__title,
+.room-card__title {
   font-size: 0.8rem;
   color: var(--graphite-dark-color);
   line-height: 1.4;
@@ -170,6 +173,7 @@ a {
 }
 
 .room-card__user__name {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -179,8 +183,8 @@ a {
 .room-card__user .icon {
   background: var(--button-green-color);
   width: 10px;
+  height: 10px;
   border-radius: 50%;
-  padding: 0.2rem;
 }
 
 .room-card__user__img {
@@ -190,7 +194,7 @@ a {
   border-radius: 50%;
 }
 
-.room-card__user__img img {
+.room-card__user__img>img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -429,4 +433,7 @@ a {
 .hidden {
   display: none;
 }
-audio { display:none;}
+
+audio {
+  display: none;
+}
