@@ -24,7 +24,10 @@ export default class RoomController {
   }
 
   onUserConnected() {
-    return (user) => console.log("user connected: ", user);
+    return (user) => {
+      console.log("user connected: ", user);
+      this.view.addAttendeeOnGrid(user);
+    };
   }
 
   onUserDisconnected() {
